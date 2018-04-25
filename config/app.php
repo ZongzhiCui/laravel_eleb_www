@@ -177,6 +177,12 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        //验证码
+        Mews\Captcha\CaptchaServiceProvider::class,
+        //微略图
+        Intervention\Image\ImageServiceProvider::class,
+        //阿里云oss
+        AliyunOss\Laravel\AliyunOssServiceProvider::class,
     ],
 
     /*
@@ -226,6 +232,12 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        //验证码
+        'Captcha' => Mews\Captcha\Facades\Captcha::class,
+        //微略图
+        'Image' => Intervention\Image\Facades\Image::class,
+        //阿里云OSS
+        'OSS' => AliyunOss\Laravel\AliyunOssFacade::class,
     ],
 
 ];
