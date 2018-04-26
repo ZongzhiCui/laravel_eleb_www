@@ -16,3 +16,10 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+//短信验证发送api接口 有前缀api
+Route::get('/sms','SendSmsController@sendSms');
+//前端注册信息短信验证和注册
+Route::post('/regist','SendSmsController@regist');
+//前端登录的验证
+Route::post('/loginCheck','SendSmsController@loginCheck');

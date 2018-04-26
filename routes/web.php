@@ -40,3 +40,7 @@ Route::get('/oss', function()
 });
 Route::get('/shops','ApiController@shops');
 Route::get('/business','ApiController@business');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
