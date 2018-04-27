@@ -24,6 +24,9 @@ class ApiController extends Controller
         $food_cates = DB::select('select * from `food_cates` where business_id = ?',[$id]);
         foreach ($food_cates as $row){
             $foods = DB::select('select * from `foods` where business_is = ? and `food_cates_id` = ?',[$id,$row->id]);
+            foreach ($foods as $item){
+                $item->goods_id = $item->id;
+            }
             $row->goods_list = $foods;
         }
         foreach ($business as $row){
@@ -37,4 +40,9 @@ class ApiController extends Controller
         return json_encode($business[0]);
     }
 
+    /**购物车接口对应的方法**/
+    public function addCart()
+    {
+
+    }
 }

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\SignatureHelper;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class SendSmsController extends Controller
 {
@@ -77,12 +79,12 @@ class SendSmsController extends Controller
         }*/
         if ($content->Message == 'OK'){
             //短信发送成功!
-            return '{"status": "true",
-                    "message": "获取短信验证码成功"}';
+            return ["status"=> "true",
+                    "message"=> "获取短信验证码成功"];
         }else{
             //发送失败
-            return '{"status": "false",
-                    "message": "获取短信验证码失败!稍后再试"}';
+            return ["status"=> "false",
+                    "message"=> "获取短信验证码失败!稍后再试"];
         }
 //        return $content;
     }
@@ -94,15 +96,33 @@ class SendSmsController extends Controller
 //        return $request->input();
         $code = Redis::get('code'.$request->tel);
         if ($code != $request->sms){
-            return '{"status": "false",
-                    "message": "验证码不正确"}';
+            return ["status"=> "false",
+                    "message"=> "验证码不正确"];
         }
-        $this->validate($request,[
-           'username'=> 'required',
+        //记录下Rules    Rule::unique('users')->ignore($user->id)
+        $validator = Validator::make($request->all(),[
+            'username'=> 'required|unique:users|min:4',
             'password'=>'required|min:6',
+            'tel'=>[
+                'required','unique:users',
+                "regex:/^1[34578][0-9]{9}$/"
+            ]
         ],[
-
+            'username.unique'=>'用户名已经存在!',
+            'username.min'=>'用户名至少4位!',
+            'password.min'=>'密码至少6位!',
+            'tel.unique'=>'电话号码已经存在!',
+            'tel.regex'=>'电话号码不合法!',
         ]);
+        //手动验证错误信息.
+        if ($validator->fails()) {
+            //输出错误信息到前端
+            $errors = $validator->errors();
+            return [
+                "status"=> "false",
+                "message"=> $errors->first(),
+            ];
+        }
 //        User::create($request->except('sms'));
         User::create([
             'username'=>$request->username,
@@ -110,18 +130,30 @@ class SendSmsController extends Controller
             'tel'=>$request->tel,
             'email'=>uniqid('EM_').'@qq.com',
         ]);
-        return '{"status": "true",
-                "message": "注册成功"}';
+        return ["status"=>"true",
+                "message"=> "注册成功"];
     }
 
     //登录验证loginCheck
     public function loginCheck(Request $request)
     {
 //        dd($request->name,$request->password);
-//        $this->validate($request,[
-//           'username'=>'required',
-//           'password'=>'required'
-//        ],[]);
+        $validator = Validator::make($request->all(),[
+            'name'=> 'required',
+            'password'=>'required',
+        ],[
+            'name.required'=>'用户名必须填写',
+            'password.required'=>'密码必须填写',
+        ]);
+        //手动验证错误信息.
+        if ($validator->fails()) {
+            //输出错误信息到前端
+            $errors = $validator->errors();
+            return [
+                "status"=> "false",
+                "message"=> $errors->first(),
+            ];
+        }
         if (Auth::attempt(['username'=>$request->name,'password'=>$request->password])){
             // 认证通过...
             return [
@@ -131,10 +163,10 @@ class SendSmsController extends Controller
                 "username"=>$request->username
                 ];
         }else{
-            return '{
-                "status":"false",
-                "message":"登录失败",
-                }';
+            return [
+                "status"=>"false",
+                "message"=>"登录失败",
+                ];
         }
     }
 }

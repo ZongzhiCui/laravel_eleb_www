@@ -40,6 +40,8 @@ class Kernel extends HttpKernel
         'api' => [
             'throttle:60,1',
             'bindings',
+            //针对我们项目的接口加上session
+            \Illuminate\Session\Middleware\StartSession::class,
         ],
     ];
 
