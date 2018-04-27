@@ -38,6 +38,7 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
+            \App\Http\Middleware\EncryptCookies::class,
             'throttle:60,1',
             'bindings',
             //针对我们项目的接口加上session

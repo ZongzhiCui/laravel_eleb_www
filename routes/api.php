@@ -42,4 +42,7 @@ Route::post('editAddress','PositionController@editAddress');
 Route::get('delete','PositionController@destroy');
 
 /**购物车接口**/
-Route::post('addCart','ApiController@addCart');
+//去结算
+Route::post('addCart','CartController@addCart');
+//订单详情
+Route::get('cart','CartController@cart');

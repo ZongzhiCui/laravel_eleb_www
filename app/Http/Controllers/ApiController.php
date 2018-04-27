@@ -40,9 +40,4 @@ class ApiController extends Controller
         return json_encode($business[0]);
     }
 
-    /**购物车接口对应的方法**/
-    public function addCart()
-    {
-
-    }
 }

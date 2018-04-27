@@ -28,7 +28,7 @@ window.api = {
   // 保存购物车接口
   addCart: '/api/addCart',
   // 获取购物车数据接口
-  cart: '/cart.php',
+  cart: '/api/cart',
   // 添加订单接口
   addOrder: '/addorder.php',
   // 支付接口
