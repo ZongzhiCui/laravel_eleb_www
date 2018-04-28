@@ -26,6 +26,7 @@ class ApiController extends Controller
             $foods = DB::select('select * from `foods` where business_is = ? and `food_cates_id` = ?',[$id,$row->id]);
             foreach ($foods as $item){
                 $item->goods_id = $item->id;
+                $item->goods_price = $item->price;
             }
             $row->goods_list = $foods;
         }

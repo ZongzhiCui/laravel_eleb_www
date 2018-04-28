@@ -18,7 +18,7 @@ window.api = {
   // 保存修改地址接口
   editAddress: '/api/editAddress',
   // 获得订单列表接口
-  orderList: '/orderList.php',
+  orderList: '/api/orderList',
   // 获得指定订单接口
   order: '/api/order',
   // 获得商家列表接口
@@ -32,5 +32,5 @@ window.api = {
   // 添加订单接口
   addOrder: '/api/addorder',
   // 支付接口
-  pay: '/pay.php'
+  pay: '/api/pay'
 };

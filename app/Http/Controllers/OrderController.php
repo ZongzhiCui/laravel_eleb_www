@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\Order_foods;
 use App\Models\Position;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
@@ -39,6 +40,7 @@ class OrderController extends Controller
         DB::transaction(function () use($order_code,$shop_id,$money,$addr,$foods) {
             $order = Order::create([
                 'order_code'=>$order_code,
+                'users_id'=>Auth::user()->id,
                 'shop_id'=>$shop_id->id,
                 'shop_name'=>$shop_id->shop_name,
                 'shop_img'=>$shop_id->shop_img,
@@ -69,7 +71,7 @@ class OrderController extends Controller
             "order_id"=>$id
         ];
     }
-
+    /**订单详情**/
     public function order(Request $request)
     {
         $order = Order::find($request->id);
@@ -85,8 +87,48 @@ class OrderController extends Controller
             $good->goods_price = $good->foods_price;
         }
         $order->order_birth_time = substr($order->created_at,0,16);
+        $order->order_status = $order->order_status==0?'代付款':'已付款';
         $order->goods_list = $goods_list;
         $order->order_address = $order->receipt_provence.$order->receipt_city.$order->receipt_area.$order->receipt_detail_address.$order->receipt_name.$order->receipt_tel;
         return $order;
+    }
+    
+    /**订单列表**/
+    public function orderList()
+    {
+        $orders = Order::where('users_id',Auth::user()->id)->get();
+        foreach ($orders as $order){
+            $goods_list = Order_foods::where('order_id',$order->id)->get();
+            foreach ($goods_list as $good){
+                $good->goods_id = $good->foods_id;
+                $good->goods_name = $good->foods_name;
+                $good->goods_img = $good->foods_logo;
+                $good->amount = $good->foods_amount;
+                $good->goods_price = $good->foods_price;
+            }
+            $order->order_birth_time = substr($order->created_at,0,16);
+            $order->order_status = $order->order_status==0?'代付款':'已付款';
+            $order->goods_list = $goods_list;
+            $order->order_address = $order->receipt_provence.$order->receipt_city.$order->receipt_area.$order->receipt_detail_address.$order->receipt_name.$order->receipt_tel;
+        }
+        return $orders;
+    }
+    
+    /**支付订单**/
+    public function pay(Request $request)
+    {
+        if (false){
+            return [
+                "status"=> "false",
+                "message"=> "支付失败"
+            ];
+        }
+        /**$order = Order::find($request->id)->update([
+            'order_status'=>1,
+        ]);*/
+        return [
+            "status"=> "true",
+            "message"=> "支付成功"
+        ];
     }
 }

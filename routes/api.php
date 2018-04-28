@@ -51,3 +51,7 @@ Route::get('cart','CartController@cart');
 Route::post('addorder','OrderController@addorder');
 //订单显示
 Route::get('order','OrderController@order');
+//订单列表
+Route::get('orderList','OrderController@orderList');
+//订单支付
+Route::post('pay','OrderController@pay');
