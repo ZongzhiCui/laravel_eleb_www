@@ -46,3 +46,8 @@ Route::get('delete','PositionController@destroy');
 Route::post('addCart','CartController@addCart');
 //订单详情
 Route::get('cart','CartController@cart');
+
+/**订单生成接口**/
+Route::post('addorder','OrderController@addorder');
+//订单显示
+Route::get('order','OrderController@order');
