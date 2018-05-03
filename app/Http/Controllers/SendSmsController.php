@@ -154,7 +154,7 @@ class SendSmsController extends Controller
                 "message"=> $errors->first(),
             ];
         }
-        if (Auth::attempt(['username'=>$request->name,'password'=>$request->password])){
+        if (Auth::attempt(['username'=>$request->name,'password'=>$request->password,'status'=>'0'])){
             // 认证通过...
             return [
                 "status"=>"true",
@@ -165,7 +165,7 @@ class SendSmsController extends Controller
         }else{
             return [
                 "status"=>"false",
-                "message"=>"登录失败",
+                "message"=>"登录失败!",
                 ];
         }
     }
