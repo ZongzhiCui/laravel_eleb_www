@@ -123,12 +123,25 @@ class OrderController extends Controller
                 "message"=> "支付失败"
             ];
         }
-        /**$order = Order::find($request->id)->update([
+        $orderId = 23;
+        Order::find($orderId)->update([  //前端没有传参数!!! 这个find后修改 返回的是布尔值!
             'order_status'=>1,
-        ]);*/
+        ]);
+        $order = Order::find($orderId);
+        $shop_user = DB::table('shop_users')->where('business_id',$order->shop_id)->first();
+        $this->sendEmail(); //$shop_user->emial,$shop_user->emial
         return [
             "status"=> "true",
             "message"=> "支付成功"
         ];
+    }
+    //发送邮件的方法
+    private function sendEmail($email='cfq850228@163.com',$name='cfq850228@163.com'){
+        \Illuminate\Support\Facades\Mail::send(
+            'mail',//邮件视图模版
+            ['name'=>$name],//模版变量赋值
+            function ($message) use($email){
+                $message->to($email)->subject('您有新的订单');
+            });
     }
 }
