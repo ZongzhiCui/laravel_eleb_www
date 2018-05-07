@@ -124,7 +124,7 @@ class OrderController extends Controller
             ];
         }
         $orderId = 23;
-        Order::find($orderId)->update([  //前端没有传参数!!! 这个find后修改 返回的是布尔值!
+        Order::find($orderId)->update([  //前端没有传参数!!!  返回的是布尔值!
             'order_status'=>1,
         ]);
         $order = Order::find($orderId);
