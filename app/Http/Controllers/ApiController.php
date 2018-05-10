@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\SphinxClient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -12,7 +13,7 @@ class ApiController extends Controller
         $keyword = $_GET['keyword']??'';
         if (!empty($keyword)){
 //            dd($keyword);
-            $cl = new \App\SphinxClient();
+            $cl = new SphinxClient();
             $cl->SetServer ( '127.0.0.1', 9312);
 //$cl->SetServer ( '10.6.0.6', 9312);
 //$cl->SetServer ( '10.6.0.22', 9312);
