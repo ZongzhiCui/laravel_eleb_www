@@ -10,7 +10,7 @@ namespace App;
 class SignatureHelper {
 
     /**
-     * 生成签名并发起请求
+     * 生成签名并发起请求 - 短信验证的
      *
      * @param $accessKeyId string AccessKeyId (https://ak-console.aliyun.com/)
      * @param $accessKeySecret string AccessKeySecret
